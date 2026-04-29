@@ -1,0 +1,150 @@
+class Vino {
+  constructor(nombre, tipo, precio) {
+    this.nombre = nombre;
+    this.tipo = tipo; // tinto, blanco, etc
+    this.precio = precio;
+  }
+} class Botella {
+  constructor(vino, año) {
+    this.vino = vino;
+    this.año = año;
+  }
+} class Botella {
+  constructor(vino, año) {
+    this.vino = vino;
+    this.año = año;
+  }
+} class Pedido {
+  constructor(cliente) {
+    this.cliente = cliente;
+    this.productos = [];
+  }
+
+  agregarProducto(botella) {
+    this.productos.push(botella);
+  }
+
+  calcularTotal() {
+    return this.productos.reduce((total, b) => total + b.vino.precio, 0);
+  }
+} class Cliente {
+  constructor(nombre) {
+    this.nombre = nombre;
+  }
+} Cómo interactúan: Un Pedido tiene un Cliente
+Un Pedido tiene muchas Botellas
+Una Botella tiene un Vino
+La Bodega tiene muchas Botellas (stock) // 🍷 VINO
+class Vino {
+  constructor(id, nombre, tipo, precio) {
+    this.id = id;
+    this.nombre = nombre;
+    this.tipo = tipo;
+    this.precio = precio;
+  }
+}
+
+// 📦 ITEM DE STOCK
+class ItemStock {
+  constructor(vino, cantidad) {
+    this.vino = vino;
+    this.cantidad = cantidad;
+  }
+}
+
+// 🏪 BODEGA
+class Bodega {
+  constructor(nombre) {
+    this.nombre = nombre;
+    this.stock = [];
+  }
+
+  agregarVino(vino, cantidad) {
+    const existente = this.stock.find(item => item.vino.id === vino.id);
+
+    if (existente) {
+      existente.cantidad += cantidad;
+    } else {
+      this.stock.push(new ItemStock(vino, cantidad));
+    }
+  }
+
+  buscarVino(id) {
+    return this.stock.find(item => item.vino.id === id);
+  }
+
+  hayStock(id, cantidad) {
+    const item = this.buscarVino(id);
+    return item && item.cantidad >= cantidad;
+  }
+
+  descontarStock(id, cantidad) {
+    const item = this.buscarVino(id);
+    if (item) {
+      item.cantidad -= cantidad;
+    }
+  }
+
+  mostrarStock() {
+    console.log("📦 Stock actual:");
+    this.stock.forEach(item => {
+      console.log(`${item.vino.nombre} - ${item.cantidad} unidades`);
+    });
+  }
+}
+
+// 👤 CLIENTE
+class Cliente {
+  constructor(nombre) {
+    this.nombre = nombre;
+  }
+}
+
+// 🛒 PEDIDO
+class Pedido {
+  constructor(cliente, bodega) {
+    this.cliente = cliente;
+    this.bodega = bodega;
+    this.items = [];
+  }
+
+  agregarProducto(idVino, cantidad) {
+    if (!this.bodega.hayStock(idVino, cantidad)) {
+      console.log("❌ No hay stock suficiente");
+      return;
+    }
+
+    const itemStock = this.bodega.buscarVino(idVino);
+
+    this.items.push({
+      vino: itemStock.vino,
+      cantidad: cantidad
+    });
+
+    this.bodega.descontarStock(idVino, cantidad);
+
+    console.log(`✅ Agregado al pedido: ${itemStock.vino.nombre}`);
+  }
+
+  calcularTotal() {
+    return this.items.reduce((total, item) => {
+      return total + item.vino.precio * item.cantidad;
+    }, 0);
+  }
+
+  mostrarPedido() {
+    console.log(`🧾 Pedido de ${this.cliente.nombre}`);
+    this.items.forEach(item => {
+      console.log(`${item.vino.nombre} x${item.cantidad}`);
+    });
+    console.log(`💰 Total: $${this.calcularTotal()}`);
+  }
+}
+DOCUMENTACIÓN TP GRUPAL POO
+
+ Tema: Bodega virtual
+Descripción del producto:
+Bodega Fralexis es un producto de gestión para una bodega virtual. El sistema permite administrar los tipos de vino, los clientes, el stock y filtrar por ofertas y/o precios. Hay listados por años de cosecha, marca, tamaño y tipo de uva, tanto en precios minoristas y mayoristas.
+
+
+
