@@ -99,5 +99,22 @@ src/
 ├── data/                 # Capa de persistencia (JSON + Repository)
 ├── models/               # Clases de dominio (POO)
 ├── routes/               # Definición de rutas Express
-└── services/             # Lógica de negocio y orquestación
-```
+---
+
+## 7. Deuda Técnica y Mejoras Sugeridas
+
+### 7.1 Mejoras Arquitectónicas
+*   **Migración a Base de Datos Real:** Transicionar del `JsonRepository` a una base de datos robusta como **MongoDB** (NoSQL) para flexibilidad en productos o **PostgreSQL** (Relacional) para integridad en pedidos y stock.
+*   **Manejo de Errores Global:** Implementar un middleware centralizado en `app.js` para estandarizar las respuestas de error y reducir la redundancia de bloques `try-catch`.
+*   **Validación de Esquemas:** Integrar librerías como **Joi** o **Zod** para validar los payloads de entrada en los controladores antes de procesar la lógica de negocio.
+*   **Gestión de Variables de Entorno:** Implementar un archivo `.env` (usando `dotenv`) para manejar configuraciones sensibles como puertos, secretos de JWT y rutas de base de datos.
+
+### 7.2 Funcionalidades Pendientes / Futuras
+*   **Autenticación y Autorización:** Implementar **JWT (JSON Web Tokens)** para proteger rutas administrativas y gestionar perfiles de clientes.
+*   **Pasarela de Pagos:** Integración con APIs de terceros (Mercado Pago, Stripe) para el cierre del flujo de venta.
+*   **Servicio de Notificaciones:** Implementar **Nodemailer** para el envío automático de correos de confirmación de pedidos y cambios de estado.
+*   **Buscador Avanzado:** Filtros dinámicos multicriterio (cepa, rango de precio, cosecha, ofertas).
+
+### 7.3 Documentación y Herramientas
+*   **Documentación de API:** Implementar **Swagger (OpenAPI)** para proveer una interfaz interactiva de pruebas para los endpoints.
+*   **Logs y Monitoreo:** Integrar una herramienta como `winston` o `morgan` para seguimiento de peticiones y errores en producción.
