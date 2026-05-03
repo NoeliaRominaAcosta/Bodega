@@ -5,11 +5,16 @@ import categoriaRoutes from './routes/categoriaRoutes.js';
 import pedidoRoutes from './routes/pedidoRoutes.js';
 import envioRoutes from './routes/envioRoutes.js';
 import { errorHandler } from './middlewares/errorHandler.js';
+import swaggerUi from 'swagger-ui-express';
+import { specs } from './config/swagger.js';
 
 const app = express();
 const PORT = 3000;
 
 app.use(express.json());
+
+// Documentación Swagger
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 // Rutas
 app.use('/api/vinos', vinoRoutes);

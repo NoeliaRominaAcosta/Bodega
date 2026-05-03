@@ -13,9 +13,8 @@ Este documento detalla la arquitectura técnica y funcional del sistema "Bodega 
 *   **Entorno de Ejecución:** Node.js (v18+)
 *   **Framework Web:** Express.js
 *   **Gestión de Módulos:** ES Modules (import/export)
-*   **Persistencia:** Archivos JSON locales (Simulación de base de datos NoSQL)
-*   **Formato de Intercambio:** JSON
-
+*   **Persistencia:** Mysql
+*   **Formato de Intercambio:** HTTP REST
 ---
 
 ## 3. Arquitectura del Sistema
