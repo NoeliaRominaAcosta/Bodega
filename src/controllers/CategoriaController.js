@@ -1,51 +1,63 @@
 import { CategoriaService } from '../services/CategoriaService.js';
 
 export class CategoriaController {
-  static async getAll(req, res) {
+  static async getAll(req, res, next) {
     try {
       const categorias = await CategoriaService.getAll();
       res.json(categorias);
     } catch (err) {
-      res.status(500).json({ error: 'Error al obtener las categorías' });
+      next(err);
     }
   }
 
-  static async getById(req, res) {
+  static async getById(req, res, next) {
     try {
       const categoria = await CategoriaService.getById(req.params.id);
-      if (!categoria) return res.status(404).json({ error: 'Categoría no encontrada' });
+      if (!categoria) {
+        const error = new Error('Categoría no encontrada');
+        error.status = 404;
+        throw error;
+      }
       res.json(categoria);
     } catch (err) {
-      res.status(500).json({ error: 'Error al obtener la categoría' });
+      next(err);
     }
   }
 
-  static async create(req, res) {
+  static async create(req, res, next) {
     try {
       const creado = await CategoriaService.create(req.body);
       res.status(201).json(creado);
     } catch (err) {
-      res.status(500).json({ error: 'Error al crear la categoría' });
+      next(err);
     }
   }
 
-  static async update(req, res) {
+  static async update(req, res, next) {
     try {
       const actualizado = await CategoriaService.update(req.params.id, req.body);
-      if (!actualizado) return res.status(404).json({ error: 'Categoría no encontrada' });
+      if (!actualizado) {
+        const error = new Error('Categoría no encontrada');
+        error.status = 404;
+        throw error;
+      }
       res.json(actualizado);
     } catch (err) {
-      res.status(500).json({ error: 'Error al actualizar la categoría' });
+      next(err);
     }
   }
 
-  static async delete(req, res) {
+  static async delete(req, res, next) {
     try {
       const eliminado = await CategoriaService.delete(req.params.id);
-      if (!eliminado) return res.status(404).json({ error: 'Categoría no encontrada' });
+      if (!eliminado) {
+        const error = new Error('Categoría no encontrada');
+        error.status = 404;
+        throw error;
+      }
       res.status(204).send();
     } catch (err) {
-      res.status(500).json({ error: 'Error al eliminar la categoría' });
+      next(err);
     }
   }
 }

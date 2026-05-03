@@ -25,8 +25,19 @@ export class ClienteService {
 
   static async create(data) {
     const { id, nombre, apellido, email, telefono, direccionEnvio, tipo, cuit } = data;
+    
+    // Validación de email básico
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      throw new Error('Formato de email inválido');
+    }
+
     let nuevoCliente;
     if (tipo === 'MAYORISTA') {
+      // Validación de CUIT (ejemplo simple: 11 dígitos numéricos)
+      if (!cuit || !/^\d{11}$/.test(cuit)) {
+        throw new Error('El CUIT debe tener 11 dígitos numéricos');
+      }
       nuevoCliente = new ClienteMayorista(id, nombre, apellido, email, telefono, direccionEnvio, cuit);
     } else {
       nuevoCliente = new ClienteMinorista(id, nombre, apellido, email, telefono, direccionEnvio);

@@ -1,51 +1,63 @@
 import { ClienteService } from '../services/ClienteService.js';
 
 export class ClienteController {
-  static async getAll(req, res) {
+  static async getAll(req, res, next) {
     try {
       const clientes = await ClienteService.getAll();
       res.json(clientes);
     } catch (err) {
-      res.status(500).json({ error: 'Error al obtener los clientes' });
+      next(err);
     }
   }
 
-  static async getById(req, res) {
+  static async getById(req, res, next) {
     try {
       const cliente = await ClienteService.getById(req.params.id);
-      if (!cliente) return res.status(404).json({ error: 'Cliente no encontrado' });
+      if (!cliente) {
+        const error = new Error('Cliente no encontrado');
+        error.status = 404;
+        throw error;
+      }
       res.json(cliente);
     } catch (err) {
-      res.status(500).json({ error: 'Error al obtener el cliente' });
+      next(err);
     }
   }
 
-  static async create(req, res) {
+  static async create(req, res, next) {
     try {
       const creado = await ClienteService.create(req.body);
       res.status(201).json(creado);
     } catch (err) {
-      res.status(500).json({ error: 'Error al crear el cliente' });
+      next(err);
     }
   }
 
-  static async update(req, res) {
+  static async update(req, res, next) {
     try {
       const actualizado = await ClienteService.update(req.params.id, req.body);
-      if (!actualizado) return res.status(404).json({ error: 'Cliente no encontrado' });
+      if (!actualizado) {
+        const error = new Error('Cliente no encontrado');
+        error.status = 404;
+        throw error;
+      }
       res.json(actualizado);
     } catch (err) {
-      res.status(500).json({ error: 'Error al actualizar el cliente' });
+      next(err);
     }
   }
 
-  static async delete(req, res) {
+  static async delete(req, res, next) {
     try {
       const eliminado = await ClienteService.delete(req.params.id);
-      if (!eliminado) return res.status(404).json({ error: 'Cliente no encontrado' });
+      if (!eliminado) {
+        const error = new Error('Cliente no encontrado');
+        error.status = 404;
+        throw error;
+      }
       res.status(204).send();
     } catch (err) {
-      res.status(500).json({ error: 'Error al eliminar el cliente' });
+      next(err);
     }
   }
 }
