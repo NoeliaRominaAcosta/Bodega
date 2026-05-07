@@ -21,13 +21,22 @@ export class VinoController {
   }
 
   static async create(req, res) {
-    try {
-      const creado = await VinoService.create(req.body);
-      res.status(201).json(creado);
-    } catch (err) {
-      res.status(500).json({ error: 'Error al crear el vino' });
-    }
-  }
+
+   try {
+
+      const nuevoVino = await VinoService.create(req.body);
+
+      res.status(201).json(nuevoVino);
+
+   } catch (error) {
+
+      res.status(500).json({
+         error: error.message
+      });
+
+   }
+
+}
 
   static async update(req, res) {
     try {
