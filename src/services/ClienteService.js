@@ -1,8 +1,8 @@
-import { JsonRepository } from '../data/JsonRepository.js';
+import { ClienteRepository } from '../repositories/ClienteRepository.js';
 import { ClienteMinorista } from '../models/ClienteMinorista.js';
 import { ClienteMayorista } from '../models/ClienteMayorista.js';
 
-const repository = new JsonRepository('clientes.json');
+
 
 export class ClienteService {
   static instantiateCliente(c) {
@@ -13,12 +13,12 @@ export class ClienteService {
   }
 
   static async getAll() {
-    const data = await repository.getAll();
+    const data = await ClienteRepository.getAll();
     return data.map(c => this.instantiateCliente(c));
   }
 
   static async getById(id) {
-    const c = await repository.getById(id);
+    const c = await ClienteRepository.getById(id);
     if (!c) return null;
     return this.instantiateCliente(c);
   }
@@ -31,14 +31,14 @@ export class ClienteService {
     } else {
       nuevoCliente = new ClienteMinorista(id, nombre, apellido, email, telefono, direccionEnvio);
     }
-    return await repository.create(nuevoCliente);
+    return await ClienteRepository.create(nuevoCliente);
   }
 
   static async update(id, data) {
-    return await repository.update(id, data);
+    return await ClienteRepository.update(id, data);
   }
 
   static async delete(id) {
-    return await repository.delete(id);
+    return await ClienteRepository.delete(id);
   }
 }

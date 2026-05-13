@@ -6,8 +6,12 @@ export class ClienteController {
       const clientes = await ClienteService.getAll();
       res.json(clientes);
     } catch (err) {
-      res.status(500).json({ error: 'Error al obtener los clientes' });
-    }
+  console.log(err);
+
+  res.status(500).json({
+    error: err.message
+  });
+}
   }
 
   static async getById(req, res) {
